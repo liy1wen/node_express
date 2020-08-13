@@ -18,6 +18,7 @@ exports.findUsers = async (req,res,next) => {
         let queryStr = JSON.stringify(reqQuery)
         queryStr = queryStr.replace(/\b(gt|lt|gte|lte|in)\b/g,(match) => `$${match}`);
         let user = userModel.find(JSON.parse(queryStr))
+        // 根据select查询
         if(req.query.select) {
             user = user.select(req.query.select.split(",").join(" "))
         }
@@ -28,14 +29,24 @@ exports.findUsers = async (req,res,next) => {
             user = user.sort("-creatAt")
         }
         // 分页
-        // const page = parseInt(req.query.page) || 1;
-        // const limit = parseInt(req.query.limit) || 3; 
-        // const startIndex = (page - 1) * limit;
-        // const endIndex = page * limit;
-        // const total = await user.countDocuments()
-        // user.skip(startIndex).limit(limit)
-        user = await user; 
-        res.status("200").json({success:true,count: user.length,data: user})
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 3; 
+        const startIndex = (page - 1) * limit;
+        const endIndex = page * limit;
+        const total = await user.countDocuments;
+        console.log(total)
+        // const total = 100;
+        user.skip(startIndex).limit(limit)
+        const pagination = {}
+        if(startIndex > 0) {
+            pagination.pre = { page:page - 1,limit }
+        }
+        if(endIndex < total) { 
+            pagination.next = { page:page + 1,limit }
+        }
+        user = await user;   
+        // console.log(user)
+        res.status("200").json({success:true,count: user.length,pagination,data: user,total})
     } catch (error) {  
         next(error) 
     }   
