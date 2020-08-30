@@ -5,7 +5,8 @@ const logger = require("morgan")
 const db = require("./config/db.js")
 const errorHandler = require("./middleware/errorHandler.js")
 // 引入路由
-const router = require("./routes/index.js")
+const userRouter = require("./routes/index.js")
+const courseRouter = require("./routes/course.js")
 // 引入中间件
 dotenv.config({
     path: "./config/config.env"
@@ -18,7 +19,8 @@ app.use(express.json())
 db()
 app.use(logger("dev"))
 
-app.use('/api/v2/user', router)
+app.use('/api/v2/user', userRouter)
+app.use('/api/v2/course', courseRouter)
 
 app.use(errorHandler)
 const PORT = process.env.PORT || "3000"
