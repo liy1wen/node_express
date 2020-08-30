@@ -49,7 +49,7 @@ userSchema.virtual("courses", {
     foreignField: "users",
     justOne: false
 })
-// 配置前置钩子
+// 配置前置钩子，连带删除
 userSchema.pre("remove", async function (next) {
     await this.model("courseModel").deleteMany({
         users: this._id
