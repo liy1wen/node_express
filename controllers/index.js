@@ -1,6 +1,10 @@
 const userModel = require("../modules/user.js")
 // const ErrorResponse = require("../utils/errorResponse.js")
-// 根据id查找单个
+/**
+ * @description 根据id查询用户信息
+ * @route GET /api/v2/getuser/:id
+ * @access 公开的
+ */
 exports.findUser = async (req,res,next)=> {
     try {
         const user = await userModel.findById(req.params.id)
@@ -9,7 +13,11 @@ exports.findUser = async (req,res,next)=> {
         next(error)
     }
 }
-// 查找所有
+/**
+ * @description 获取所有用户信息列表
+ * @route GET /api/v2/getusers
+ * @access 公开的
+ */
 exports.findUsers = async (req,res,next) => {
     try {
         const reqQuery = { ...req.query }
@@ -52,7 +60,11 @@ exports.findUsers = async (req,res,next) => {
     }   
 } 
 
-// 创建用户
+/**
+ * @description 创建用户
+ * @route POST /api/v2/creatusers
+ * @access 公开的
+ */
 exports.CreatUser = async (req,res,next)=> {
     try {
         const user = await userModel.create(req.body)
