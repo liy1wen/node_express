@@ -19,7 +19,7 @@ const userModel = require("../modules/user.js")
 /**
  * @description 获取所有用户信息列表
  * @route GET /api/v2/getusers
- * @access 公开的
+ * @access public
  */
 exports.findUsers = async (req, res, next) => {
     try {
@@ -31,54 +31,7 @@ exports.findUsers = async (req, res, next) => {
                 data: user
             })
         } else {
-            const reqQuery = {
-                ...req.query
-            }
-            const keyword = ["select", "sort", "page", "limit"]
-            keyword.forEach(item => delete reqQuery[item])
-            let queryStr = JSON.stringify(reqQuery)
-            queryStr = queryStr.replace(/\b(gt|lt|gte|lte|in)\b/g, (match) => `$${match}`);
-            let user = userModel.find(JSON.parse(queryStr)).populate("courses")
-            // 根据select查询
-            if (req.query.select) {
-                user = user.select(req.query.select.split(",").join(" "))
-            }
-            // 排序，默认时间倒序
-            if (req.query.sort) {
-                user = user.sort(req.query.sort.split(",").join(" "))
-            } else {
-                user = user.sort("-creatAt")
-            }
-            // 分页
-            const page = parseInt(req.query.page) || 1;
-            const limit = parseInt(req.query.limit) || 10;
-            const startIndex = (page - 1) * limit;
-            const endIndex = page * limit;
-            const total = await user.countDocuments;
-            console.log(total)
-            // const total = 100;
-            user.skip(startIndex).limit(limit)
-            const pagination = {}
-            if (startIndex > 0) {
-                pagination.pre = {
-                    page: page - 1,
-                    limit
-                }
-            }
-            if (endIndex < total) {
-                pagination.next = {
-                    page: page + 1,
-                    limit
-                }
-            }
-            user = await user;
-            res.status("200").json({
-                success: true,
-                count: user.length,
-                pagination,
-                data: user,
-                total
-            })
+            res.status("200").json(res.advancedResults)
         }
 
     } catch (error) {

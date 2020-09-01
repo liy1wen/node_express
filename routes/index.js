@@ -1,19 +1,19 @@
 const express = require("express")
 const router = express.Router()
 const {
-    // findUser,
     findUsers,
     CreatUser,
     RemoveUsers,
     UpdateUser
 } = require("../controllers/index.js")
-
+const advancedResults = require("../middleware/advancesResults")
+const userModel = require("../modules/user.js")
 // 定向路由
 const courseRouter = require("./course.js")
-router.use("/:userId/getcourses", courseRouter)
+router.use("/:userId/courses", courseRouter)
 
 // 查找所有用户
-router.route("/getusers").get(findUsers)
+router.route("/getusers").get(advancedResults(userModel, "courses"), findUsers)
 // 根据id查找用户
 router.route("/getusers/:id").get(findUsers)
 // 添加用户

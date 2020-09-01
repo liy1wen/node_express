@@ -10,16 +10,13 @@ const {
     // RemoveCourse,
     UpdateCourse
 } = require("../controllers/course.js")
-// 查找所有课程
-router.route('/').get(findCourses)
-// 根据id查找课程
-// router.route('/getcourses/:id').get(findCourse)
-// 添加课程
-router.route('/creatcourses').post(CreatCourse)
-// 删除所有课程
-router.route('/removecourses').delete(RemoveCourses)
-// 删除单个用户
-// router.route('/removecourses/:id').delete(RemoveCourse)
-// 更新课程
-router.route('/updatecourses/:id').put(UpdateCourse)
+const advancedResults = require("../middleware/advancesResults")
+const courseModel = require("../modules/course.js")
+// 查找和添加课程
+router.route('/').get(advancedResults(courseModel, {
+    path: 'users',
+    select: 'name city',
+}), findCourses).post(CreatCourse)
+// 删除和更新课程单个用户
+router.route('/:id').delete(RemoveCourses).put(UpdateCourse)
 module.exports = router

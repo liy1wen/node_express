@@ -19,10 +19,13 @@ app.use(express.json())
 db()
 app.use(logger("dev"))
 
+// 挂载路由
 app.use('/api/v2/user', userRouter)
 app.use('/api/v2/course', courseRouter)
 
+//处理请求报错中间件
 app.use(errorHandler)
+
 const PORT = process.env.PORT || "3000"
 const serve = app.listen(PORT, () => {
     console.log(`服务在端口${PORT}运行`.bgRed)
