@@ -1,0 +1,15 @@
+[{
+        "_id": "5f4b47fa605ac542980f400c",
+        "name": "李伟",
+        "password": "123456798",
+        "role": "user",
+        "email": "18727623230@163.com"
+    }, {
+        "_id": "5f4b47fa605ac542980f400d",
+        "name": "张妮",
+        "password": "654312",
+        "role": "admin",
+        "email": "18727623235@163.com"
+    }
+
+]
