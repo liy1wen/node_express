@@ -3,26 +3,26 @@
         "coursename": "微信小程序",
         "describtion": "三天入门微信小程序开发",
         "tuition": "￥59",
-        "users": "5f4b47fa605ac542980f400c",
+        "camps": "5f4b47fa605ac542980f400c",
         "level": "初级",
-        "user": "5f2f907f4d73bb1a10c24398"
+        "camp": "5f2f907f4d73bb1a10c24398"
     },
     {
         "weeks": "2",
         "coursename": "ios",
         "describtion": "三天入门ios开发",
         "tuition": "￥38",
-        "users": "5f4b47fa605ac542980f400d",
+        "camps": "5f4b47fa605ac542980f400d",
         "level": "初级",
-        "user": "5f2f905c4d73bb1a10c24397"
+        "camp": "5f2f905c4d73bb1a10c24397"
     },
     {
         "weeks": "2",
         "coursename": "python",
         "describtion": "三天入门python开发",
         "tuition": "￥108",
-        "users": "5f4b47fa605ac542980f400e",
+        "camps": "5f4b47fa605ac542980f400e",
         "level": "高级",
-        "user": "5f2f90c64d73bb1a10c2439b"
+        "camp": "5f2f90c64d73bb1a10c2439b"
     }
 ]

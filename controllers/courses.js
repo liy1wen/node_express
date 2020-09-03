@@ -1,5 +1,5 @@
-const courseModel = require('../modules/course.js');
-const usersModel = require('../modules/user.js')
+const courseModel = require('../modules/courses.js');
+const campsModel = require('../modules/camps.js')
 const color = require('colors');
 
 /**
@@ -7,16 +7,16 @@ const color = require('colors');
  * @route GET /api/v2/user/:userId/getcourses
  * @access public
  */
-exports.findCourses = async (req, res, next) => {
+exports.findCourses = async(req, res, next) => {
     try {
         if (req.params.userId) {
             const course = await courseModel
                 .find({
-                    users: req.params.userId,
+                    camps: req.params.userId,
                 })
                 .populate({
                     // 只返回关联user的name和city字段
-                    path: 'users',
+                    path: 'camps',
                     select: 'name city',
                 });
             res.status('200').json({
@@ -37,9 +37,9 @@ exports.findCourses = async (req, res, next) => {
  * @route POST /api/v2/user/:userId/creatcourses
  * @access private
  */
-exports.CreatCourse = async (req, res, next) => {
-    let user = await usersModel.findById(req.params.userId)
-    // 根据userid没有查到用户信息，返回错误
+exports.CreatCourse = async(req, res, next) => {
+    let user = await campsModel.findById(req.params.userId)
+        // 根据userid没有查到用户信息，返回错误
     if (!user) return next(error);
     // 查到有用户，则向用户添加课程数据
     const course = await courseModel.create(req.body);
@@ -55,7 +55,7 @@ exports.CreatCourse = async (req, res, next) => {
  * @route POST /api/v2/course/:id
  * @access private 
  */
-exports.RemoveCourses = async (req, res, next) => {
+exports.RemoveCourses = async(req, res, next) => {
     try {
         // if (req.params.id) {
         //根据id删除课程
@@ -74,7 +74,7 @@ exports.RemoveCourses = async (req, res, next) => {
  * @route POST /api/v2/course/:id
  * @access private
  */
-exports.UpdateCourse = async (req, res, next) => {
+exports.UpdateCourse = async(req, res, next) => {
     try {
         const course = await courseModel.findByIdAndUpdate(
             req.params.id,

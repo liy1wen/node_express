@@ -18,9 +18,9 @@ const courseSchema = new mongoose.Schema({
         type: String,
         required: [true, "请填写学习费用"]
     },
-    users: {
+    camps: {
         type: mongoose.Schema.ObjectId,
-        ref: "UserModel",
+        ref: "CampsModel",
         required: true
     },
     level: {
@@ -37,4 +37,4 @@ const courseSchema = new mongoose.Schema({
         default: new Date().toLocaleString()
     }
 })
-module.exports = mongoose.model("courseModel", courseSchema)
+module.exports = mongoose.model("CourseModel", courseSchema)
