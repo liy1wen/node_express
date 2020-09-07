@@ -46,7 +46,7 @@ usersSchema.methods.getAsignedJwtToken = function() {
         })
     }
     // 对登录密码进行校验
-usersSchema.methods.checkPassword = function(loginPassword) {
-    return bcrypt.compareSync(loginPassword, usersSchema.password)
+usersSchema.methods.checkPassword = async function(loginPassword) {
+    return await bcrypt.compareSync(loginPassword, this.password)
 }
 module.exports = mongoose.model("UsersModel", usersSchema)
