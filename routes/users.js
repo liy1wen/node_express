@@ -6,6 +6,6 @@ const {
     loginCamps
 } = require("../controllers/auth.js")
 
-router.route(auth, '/register').post(registerCamps) //注册
-router.route('/login', loginCamps) //登录
+router.route('/register').post(registerCamps) //注册
+router.route('/login').post(auth, loginCamps) //登录
 module.exports = router

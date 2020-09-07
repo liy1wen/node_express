@@ -5,7 +5,7 @@ const usersModel = require('../modules/users.js');
  * @route POST /api/v2/auth/register
  * @access public
  */
-exports.registerCamps = async(req, res, next) => {
+exports.registerCamps = async (req, res, next) => {
     try {
         const users = await usersModel.create(req.body)
         sendCookieResponse(users, 200, res)
@@ -19,15 +19,20 @@ exports.registerCamps = async(req, res, next) => {
  * @route POST /api/v2/auth/login
  * @access public
  */
-exports.loginCamps = async(req, res, next) => {
+exports.loginCamps = async (req, res, next) => {
     try {
-        const { password, email } = req.body;
+        const {
+            password,
+            email
+        } = req.body;
         if (!password || !email) {
             return next(error)
         }
-        console.log(email, password);
+        // console.log(email, password);
         // 现根据登录的邮箱信息进行查询用户，如果查不到登录用户则返回错误
-        const users = await usersModel.findOne({ email })
+        const users = await usersModel.findOne({
+            email
+        })
         if (!users) {
             return next(error)
         }
