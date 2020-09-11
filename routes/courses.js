@@ -3,11 +3,9 @@ const router = express.Router({
     mergeParams: true
 })
 const {
-    // findCourse,
     findCourses,
     CreatCourse,
     RemoveCourses,
-    // RemoveCourse,
     UpdateCourse
 } = require("../controllers/courses.js")
 const advancedResults = require("../middleware/advancesResults")

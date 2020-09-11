@@ -1,3 +1,4 @@
+const ErrorResponse = require('../utils/errorResponse')
 const usersModel = require('../modules/users.js');
 
 /**
@@ -5,7 +6,7 @@ const usersModel = require('../modules/users.js');
  * @route POST /api/v2/auth/register
  * @access public
  */
-exports.registerCamps = async (req, res, next) => {
+exports.registerCamps = async(req, res, next) => {
     try {
         const users = await usersModel.create(req.body)
         sendCookieResponse(users, 200, res)
@@ -19,14 +20,14 @@ exports.registerCamps = async (req, res, next) => {
  * @route POST /api/v2/auth/login
  * @access public
  */
-exports.loginCamps = async (req, res, next) => {
+exports.loginCamps = async(req, res, next) => {
     try {
         const {
             password,
             email
         } = req.body;
         if (!password || !email) {
-            return next(error)
+            return next(new ErrorResponse('请输入完整登录信息', '404'))
         }
         // console.log(email, password);
         // 现根据登录的邮箱信息进行查询用户，如果查不到登录用户则返回错误
@@ -34,12 +35,12 @@ exports.loginCamps = async (req, res, next) => {
             email
         })
         if (!users) {
-            return next(error)
+            return next(new ErrorResponse('用户不存在', '404'))
         }
         // 查到有登录用户后，在进行密码匹配，只有密码匹配成功才算登陆成功
-        const matchPassword = users.checkPassword(password)
+        const matchPassword = await users.checkPassword(password)
         if (!matchPassword) {
-            return next(error)
+            return next(new ErrorResponse('密码错误', '403'))
         }
         // 获取加密之后的token
         sendCookieResponse(users, 200, res)
