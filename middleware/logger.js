@@ -1,6 +1,10 @@
-const logger = (req,res,next) => {
-    req.message = "你好"
-    console.log("自定义中间件")
-    next()
-}
-module.exports = logger
+// 创建中间件
+const logger = (req, res, next) => {
+  // req.data = { msg: "大家好,欢迎来到米修在线" };
+  console.log(
+    `${req.method} ${req.protocol}://${req.get("host")}${req.originalUrl}`
+  );
+  next();
+};
+
+module.exports = logger;

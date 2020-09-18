@@ -1,13 +1,13 @@
-const colors = require("colors")
 const mongoose = require("mongoose");
-const db = async () => {
-    const connect = await mongoose.connect(process.env.MONGO_URL,{
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        useCreateIndex:true,
-        useFindAndModify:true
-    }) 
-    console.log(connect.connection.host.bgBlue)
-} 
+const connectDB = async () => {
+  const conn = await mongoose.connect(process.env.NET_MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
+  });
 
-module.exports = db 
+  console.log(`MongoDB Connected: ${conn.connection.host}`.blue.bold);
+};
+
+module.exports = connectDB;
