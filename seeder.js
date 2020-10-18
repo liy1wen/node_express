@@ -14,7 +14,7 @@ const User = require("./models/User.js");
 const Review = require("./models/Review.js");
 
 // 链接数据库
-mongoose.connect(process.env.NET_MONGO_URI, {
+mongoose.connect(process.env.MONGO_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,

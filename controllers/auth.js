@@ -10,9 +10,19 @@ const sendEmail = require("../utils/sendEmail.js");
  * @access  公开的
  */
 exports.register = asyncHandler(async (req, res, next) => {
-  const { name, email, role, password } = req.body;
+  const {
+    name,
+    email,
+    role,
+    password
+  } = req.body;
   // 注册用户
-  const user = await User.create({ name, email, password, role });
+  const user = await User.create({
+    name,
+    email,
+    password,
+    role
+  });
 
   // 生成token
   sendTokenResponse(user, 200, res);
@@ -24,7 +34,10 @@ exports.register = asyncHandler(async (req, res, next) => {
  * @access  公开的
  */
 exports.login = asyncHandler(async (req, res, next) => {
-  const { email, password } = req.body;
+  const {
+    email,
+    password
+  } = req.body;
 
   // 验证邮箱和密码是否为空
   if (!email || !password) {
@@ -32,17 +45,19 @@ exports.login = asyncHandler(async (req, res, next) => {
   }
 
   // 获取用户信息
-  const user = await User.findOne({ email }).select("+password");
+  const user = await User.findOne({
+    email
+  }).select("+password");
 
   // 校验用户信息是否存在
   if (!user) {
-    return next(new ErrorResponse("参数有误", 401));
+    return next(new ErrorResponse("参数有误", 400));
   }
 
   //  密码匹配
   const isMatch = await user.matchPassword(password);
   if (!isMatch) {
-    return next(new ErrorResponse("密码错误", 401));
+    return next(new ErrorResponse("密码错误", 400));
   }
 
   // 生成token;
@@ -57,7 +72,10 @@ exports.login = asyncHandler(async (req, res, next) => {
 exports.getMe = asyncHandler(async (req, res, next) => {
   //   console.log(req.user);
   const user = await User.findById(req.user.id);
-  res.status(200).json({ success: true, data: user });
+  res.status(200).json({
+    success: true,
+    data: user
+  });
 });
 
 /**
@@ -74,7 +92,10 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
     new: true,
     runValidators: true,
   });
-  res.status(200).json({ success: true, data: user });
+  res.status(200).json({
+    success: true,
+    data: user
+  });
 });
 
 /**
@@ -106,7 +127,9 @@ exports.updatePassword = asyncHandler(async (req, res, next) => {
  * @access  公开的
  */
 exports.forgotPassword = asyncHandler(async (req, res, next) => {
-  const user = await User.findOne({ email: req.body.email });
+  const user = await User.findOne({
+    email: req.body.email
+  });
 
   // 校验用户
   if (!user) {
@@ -116,7 +139,9 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
   const resetToken = user.getResetPasswordToken();
   // console.log(resetToken);
 
-  await user.save({ validateBeforeSave: false });
+  await user.save({
+    validateBeforeSave: false
+  });
 
   // 发送邮件 包含重置密码的网址
   // {{URL}}/api/v1/auth/resetpassword/imissu1217
@@ -140,11 +165,16 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
     user.resetPasswordToken = undefined;
     user.resetPasswordExpire = undefined;
 
-    await user.save({ validateBeforeSave: false });
+    await user.save({
+      validateBeforeSave: false
+    });
     return next(new ErrorResponse("邮件发送失败", 500));
   }
 
-  res.status(200).json({ success: true, data: user });
+  res.status(200).json({
+    success: true,
+    data: user
+  });
 });
 
 /**
@@ -161,7 +191,9 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
 
   const user = await User.findOne({
     resetPasswordToken,
-    resetPasswordExpire: { $gt: Date.now() },
+    resetPasswordExpire: {
+      $gt: Date.now()
+    },
   });
 
   if (!user) {
@@ -174,7 +206,9 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
   user.resetPasswordExpire = undefined;
 
   // 存储
-  await user.save({ validateBeforeSave: false });
+  await user.save({
+    validateBeforeSave: false
+  });
 
   sendTokenResponse(user, 200, res);
 });
@@ -196,5 +230,8 @@ const sendTokenResponse = (user, statusCode, res) => {
   res
     .status(statusCode)
     .cookie("token", token, options)
-    .json({ success: true, token });
+    .json({
+      success: true,
+      token
+    });
 };
